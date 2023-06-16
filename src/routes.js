@@ -86,7 +86,7 @@ const routes = [
     route: "/createnft",
     component: <CreateNFT />,
   },
-  { type: "collapse",
+  { type: "",
     name: "KYC",
     key: "kyc",
     icon: <Icon fontSize="small">assignment</Icon>,
@@ -110,7 +110,7 @@ const routes = [
   //   component: <Profile />,
   // },
   {
-    type: "collapse",
+    type: "",
     name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
@@ -118,7 +118,7 @@ const routes = [
     component: <SignIn />,
   },
   {
-    type: "collapse",
+    type: "",
     name: "Sign Up",
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,

@@ -77,8 +77,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
+  const [walletAddress, setWalletAddress] = useState();
 
-  const walletAddress = "0x742f36F28259b4F0185e7653D5a790eb4faF2aD9 "
+  // const walletAddress = "0x742f36F28259b4F0185e7653D5a790eb4faF2aD9"
+  // Check if MetaMask is installed and enabled
+if (typeof window.ethereum !== 'undefined') {
+  // Request access to the user's accounts
+  ethereum.request({ method: 'eth_requestAccounts' })
+    .then(function (accounts) {
+      // The user's address will be available in the accounts array
+      var address = accounts[0];
+      setWalletAddress(address)
+    })
+    .catch(function (error) {
+      // Handle error
+      console.error(error);
+    });
+} else {
+  console.error('MetaMask is not installed.');
+}
+
 
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState()
@@ -271,7 +289,7 @@ useEffect(() => {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/authentication/sign-up" />} />
       </Routes>
       <>
       <Button variant="outlined" onClick={handleClickOpen}>
