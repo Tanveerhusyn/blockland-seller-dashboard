@@ -79,71 +79,6 @@ export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const [walletAddress, setWalletAddress] = useState();
 
-  // const walletAddress = "0x742f36F28259b4F0185e7653D5a790eb4faF2aD9"
-  // Check if MetaMask is installed and enabled
-if (typeof window.ethereum !== 'undefined') {
-  // Request access to the user's accounts
-  ethereum.request({ method: 'eth_requestAccounts' })
-    .then(function (accounts) {
-      // The user's address will be available in the accounts array
-      var address = accounts[0];
-      setWalletAddress(address)
-    })
-    .catch(function (error) {
-      // Handle error
-      console.error(error);
-    });
-} else {
-  console.error('MetaMask is not installed.');
-}
-
-
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState()
-
-  const fetchData = async() => {
-    console.log("INSIDE",walletAddress )
-    fetch(`http://52.147.197.64:5001/user/userNFTs/${walletAddress}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Received Data", data);
-
-      data && data.map((item)=>{
-        if(item.call.callLink!='' && item.status!='accepted'){
-          setOpen(true)
-          setSelected(item)
-        }
-      })
-    
-    
-    }) 
-  };
-
-  // Empty dependency array to run only once on component mount
-
-  const MINUTE_MS = 20000;
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    fetchData()
-    
-  }, MINUTE_MS);
-
-  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-}, [])
-
-
-  // Listen for changes in the `callLink` field
-  // Run whenever `callLink` changes
-
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const {
     miniSidenav,
@@ -283,7 +218,7 @@ useEffect(() => {
             onMouseLeave={handleOnMouseLeave}
           />
            
-         
+          
         </>
       )}
       {layout === "vr" && <Configurator />}
@@ -292,36 +227,7 @@ useEffect(() => {
         <Route path="*" element={<Navigate to="/authentication/sign-up" />} />
       </Routes>
       <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-       Agent is calling for verification
-      </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"You are getting a call for verification"}</DialogTitle>
-        <DialogContent>
-           <div style={{display:'flex',justifyContent:'center',alignItems:'center', margin:' 20px'}}>
-           <CircularProgress color="success" /> 
-            </div> 
-          <DialogContentText id="alert-dialog-slide-description">
-         Property Name:  {selected?.metadata?.propertyName}
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-slide-description">
-         Owner:  {selected?.metadata?.propertyOwner}
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-slide-description">
-         Address:  {selected?.metadata?.propertyAddress}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>close</Button>
-          <MDButton href={selected?.call?.callLink} target="_blank" onClick={handleClose}>Join</MDButton>
-        </DialogActions>
-      </Dialog>
+  
     </ >
       </ThirdwebProvider>
     </ThemeProvider>
